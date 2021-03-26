@@ -1,0 +1,67 @@
+# 1. User can register (DML)
+INSERT INTO acc(user_id, username, salt, password, profile_pic, created_at
+VALUES ('1', 'akbar', 'abcd', 'password1234', 'profile.jpg', now() )
+
+# 2. User can change profile information (DML)
+UPDATE acc
+SET 
+username = 'username_baru',
+password = 'new_password'
+profile_pic = 'profile_updated.jpg'
+WHERE user_id = '1'
+
+# 3. User can change their password (DML)
+UPDATE acc
+SET password = 'new_password1234'
+WHERE user_id = '1'
+
+# 4. User can see other user's profile (DQL)
+SELECT username, profile_pic, created_at
+FROM acc
+WHERE user_id = '1'
+
+# 5. User can see list of group chat (DQL)
+SELECT * FROM room
+
+# 6. User can see list of group chat by category
+SELECT * 
+FROM room
+WHERE category_id = '23'
+
+# 7. User can join group chat
+INSERT INTO room_participants(roomd_id, user_id) 
+VALUES ('room_1', '1')
+
+# 8. User can leave group chat (DML)
+DELETE FROM room_participants
+WHERE room_id = 'room_1' AND user_id = '1'
+
+# 9. User can see group chat participants
+SELECT acc.user_id, username, profile_pic
+FROM acc
+INNER JOIN room_participants USING(user_id)
+WHERE room_id = '1'
+
+# 10. User can create group chat
+INSERT INTO room(room_id, admin_user_id, name, description, category_id, created_at)
+VALUES ('room_2', '2', 'Skilvul Golang Group', 'Grup untuk saling sharing seputar golang', '2', now())
+
+# 11. User can invite other users
+INSERT INTO room_participants(room_id, user_id)
+VALUES ('room_2', '3')
+
+# 12. User can manage group chat
+UPDATE room
+SET
+name = 'Skilvul updated',
+description = 'Deskripsi baru',
+category_id = '3',
+WHERE room_id = 'room_2'
+
+# 13. User can search keyword in a group chat
+SELECT * FROM chat
+WHERE message LIKE %keyword%
+
+# 14. User can attach file or image
+# --
+
